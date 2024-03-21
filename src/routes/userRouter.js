@@ -61,12 +61,16 @@ userRouter.delete("/:userId", async function (req, res) {
 
 userRouter.put("/:userId", async function (req, res) {
   try {
-    const {age, email} = req.body;
+    const {
+      age,
+      email,
+      name: {first, last},
+    } = req.body;
     const {userId} = req.params;
     const user = await User.findByIdAndUpdate(
       userId,
       {
-        $set: {age, email},
+        $set: {age, email, name: {first, last}},
       },
       {new: true}
     );
