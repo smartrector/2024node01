@@ -40,14 +40,29 @@ blogRouter.get("/:blogId", async function (req, res) {
   }
 });
 
-blogRouter.put("/", async function (req, res) {
+blogRouter.put("/:blogId", async function (req, res) {
   try {
+    const {blogId} = req.params;
+    const {title, content} = req.body;
+
+    const blog = await Blog.findOneAndUpdate(
+      {_id: blogId},
+      {title, content},
+      {new: true}
+    );
+
+    return res.send({blog});
   } catch (error) {
     return res.status(500).send({error: error.message});
   }
 });
-blogRouter.patch("/", async function (req, res) {
+blogRouter.patch("/:blogId/live", async function (req, res) {
   try {
+    const {blogId} = req.params;
+    const {islive} = req.body;
+
+    const blog = await Blog.findByIdAndUpdate(blogId, {islive}, {new: true});
+    return res.send({blog});
   } catch (error) {
     return res.status(500).send({error: error.message});
   }
