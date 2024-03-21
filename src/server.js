@@ -11,6 +11,7 @@ dotenv.config();
 const server = async function () {
   try {
     await mongoose.connect(process.env.MONGO_URL);
+
     console.log("디비연결완료~~~!!!!!fdassssssssssss");
     mongoose.set("debug", true);
     app.use(express.json());
