@@ -34,7 +34,7 @@ userRouter.post("/", async function (req, res) {
   try {
     const user = new User(req.body);
     await user.save();
-    res.send(user);
+    return res.send(user);
   } catch (error) {
     return res.status(500).send({error: error.message});
   }
