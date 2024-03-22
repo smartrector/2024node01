@@ -1,5 +1,5 @@
 const {Router} = require("express");
-const commentRouter = Router();
+const commentRouter = Router({mergeParams: true});
 const {Comment} = require("../models/Comment");
 const {Blog} = require("../models/Blog");
 const {User} = require("../models/User");
@@ -10,28 +10,28 @@ commentRouter.post("/", async (req, res) => {
     const {blogId} = req.params;
     const {content, userId} = req.body;
     console.log(blogId);
-    // if (!mongoose.isValidObjectId(blogId))
-    //   return res.status(400).send({err: "blogId is invalid"});
-    // if (!mongoose.isValidObjectId(userId))
-    //   return res.status(400).send({err: "userId is invalid"});
-    // if (typeof content !== "string")
-    //   return res.status(400).send({err: "content is required"});
+    if (!mongoose.isValidObjectId(blogId))
+      return res.status(400).send({err: "blogId is invalid"});
+    if (!mongoose.isValidObjectId(userId))
+      return res.status(400).send({err: "userId is invalid"});
+    if (typeof content !== "string")
+      return res.status(400).send({err: "content is required"});
 
-    // const [blog, user] = await Promise.all([
-    //   Blog.findByIdAndUpdate(blogId),
-    //   User.findByIdAndUpdate(userId),
-    // ]);
+    const [blog, user] = await Promise.all([
+      Blog.findByIdAndUpdate(blogId),
+      User.findByIdAndUpdate(userId),
+    ]);
     // const blog = await Blog.findByIdAndUpdate(blogId);
     // const user = await User.findByIdAndUpdate(userId);
-    // if (!blog || !user)
-    //   return res.status(400).send({err: "blog or user does not exist"});
-    // if (!blog.islive)
-    //   return res.status(400).send({err: "blog is not available"});
-    // const comment = new Comment({content, user, blog});
-    // await comment.save();
-    return res.send({blogId, userId});
+    if (!blog || !user)
+      return res.status(400).send({err: "blog or user does not exist"});
+    if (!blog.islive)
+      return res.status(400).send({err: "blog is not available"});
+    const comment = new Comment({content, user, blog});
+    await comment.save();
+    return res.send({comment});
   } catch (err) {
-    return res.status(400).send({err: err.message});
+    return res.status(400).send({err1: err.message});
   }
 });
 
