@@ -1,4 +1,5 @@
 const {Router} = require("express");
+
 const commentRouter = Router({mergeParams: true});
 const {Comment} = require("../models/Comment");
 const {Blog} = require("../models/Blog");
