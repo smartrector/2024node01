@@ -11,7 +11,7 @@ userRouter.get("/", async function (req, res) {
     return res.status(500).send({error: error.message});
   }
 });
-
+//test
 // userRouter.get("/user/:userId",async function(req,res){
 //     try {
 
